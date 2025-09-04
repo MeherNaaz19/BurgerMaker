@@ -1,11 +1,147 @@
-<DOCTYPE html>
-<html>
+<!doctype html>
+<html lang="en">
 <head>
-<title>My Protfolio</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Builder Pattern Demo — Burger</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 20px; }
+    h1 { color: #1f5488; }
+    .controls { margin: 20px 0; }
+    .btn {
+      margin: 5px;
+      padding: 10px 15px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      cursor: pointer;
+      background: #f8f8f8;
+      font-weight: bold;
+    }
+    .btn:hover { background: #eaeaea; }
+    #burgerList { margin-top: 10px; padding: 0; }
+    #burgerList li { list-style: none; padding: 5px 0; font-size: 18px; }
+    .check { color: green; font-weight: bold; }
+  </style>
 </head>
 <body>
-<h1>Welcome to My Protfolio</h1>
-<p>This is my about section.</p>
-<a href="project.html">View My Projects</a>
+  <h1>🍔 Builder Pattern Demo - Burger Booking</h1>
+  <p><b>Builder Pattern:</b> Construct Veg/Non-Veg/Paneer burgers step by step.</p>
+
+  <div class="controls">
+    <!-- Ingredient Buttons -->
+    <button class="btn" onclick="addIngredient('🍞 Bun')">Add Bun</button>
+    <button class="btn" onclick="addIngredient('🥩 Chicken Patty')">Add Chicken Patty</button>
+    <button class="btn" onclick="addIngredient('🌱 Veg Patty')">Add Veg Patty</button>
+    <button class="btn" onclick="addIngredient('🧀 Cheese')">Add Cheese</button>
+    <button class="btn" onclick="addIngredient('🥬 Lettuce')">Add Lettuce</button>
+    <button class="btn" onclick="addIngredient('🧈 Paneer')">Add Paneer</button>
+    <button class="btn" onclick="addIngredient('🍅 Tomato')">Add Tomato</button>
+    <button class="btn" onclick="addIngredient('🧅 Onion')">Add Onion</button>
+    <button class="btn" onclick="addIngredient('🥒 Cucumber')">Add Cucumber</button>
+    <button class="btn" onclick="addIngredient('🌶️ Spicy Sauce')">Add Spicy Sauce</button>
+    <button class="btn" onclick="addIngredient('🍯 Mayo')">Add Mayo</button>
+    <button class="btn" onclick="finishBurger()">✅ Finish Burger</button>
+    <button class="btn" onclick="resetBurger()">🔄 Reset</button>
+  </div>
+
+  <h2>Your Final Burger:</h2>
+  <ul id="burgerList"><li>No ingredients yet!</li></ul>
+  <p id="finishMsg"></p>
+
+  <h2>🍴 Quick Orders (Director)</h2>
+  <div class="controls">
+    <button class="btn" onclick="makeVegBurger()">🥗 Veg Burger</button>
+    <button class="btn" onclick="makeNonVegBurger()">🍗 Non-Veg Burger</button>
+    <button class="btn" onclick="makePaneerBurger()">🧈 Paneer Burger</button>
+    <button class="btn" onclick="makeDeluxeBurger()">🌟 Deluxe Burger</button>
+  </div>
+
+  <script>
+    let burger = [];
+
+    function renderBurger() {
+      const list = document.getElementById("burgerList");
+      list.innerHTML = "";
+      if (burger.length === 0) {
+        list.innerHTML = "<li>No ingredients yet!</li>";
+      } else {
+        burger.forEach(item => {
+          const li = document.createElement("li");
+          li.textContent = item;
+          list.appendChild(li);
+        });
+      }
+    }
+
+    function addIngredient(item) {
+      burger.push(item);
+      renderBurger();
+      document.getElementById("finishMsg").textContent = "";
+    }
+
+    function finishBurger() {
+      if (burger.length === 0) {
+        alert("⚠️ Add some ingredients first!");
+        return;
+      }
+      document.getElementById("finishMsg").innerHTML = "✅ Your Burger is ready for booking!";
+      console.log("Booked Burger:", burger);
+
+      // 🔔 Popup alert
+      alert("🎉 Your Burger is ready and booked!");
+    }
+
+    function resetBurger() {
+      burger = [];
+      renderBurger();
+      document.getElementById("finishMsg").textContent = "";
+    }
+
+    // Director functions (predefined recipes)
+    function makeVegBurger() {
+      resetBurger();
+      addIngredient("🍞 Bun");
+      addIngredient("🌱 Veg Patty");
+      addIngredient("🧀 Cheese");
+      addIngredient("🥬 Lettuce");
+      addIngredient("🍅 Tomato");
+      addIngredient("🍯 Mayo");
+    }
+
+    function makeNonVegBurger() {
+      resetBurger();
+      addIngredient("🍞 Bun");
+      addIngredient("🥩 Chicken Patty");
+      addIngredient("🧅 Onion");
+      addIngredient("🧀 Cheese");
+      addIngredient("🌶️ Spicy Sauce");
+    }
+
+    function makePaneerBurger() {
+      resetBurger();
+      addIngredient("🍞 Bun");
+      addIngredient("🧈 Paneer");
+      addIngredient("🥬 Lettuce");
+      addIngredient("🍅 Tomato");
+      addIngredient("🧀 Cheese");
+    }
+
+    function makeDeluxeBurger() {
+      resetBurger();
+      addIngredient("🍞 Bun");
+      addIngredient("🌱 Veg Patty");
+      addIngredient("🥩 Chicken Patty");
+      addIngredient("🧈 Paneer");
+      addIngredient("🧀 Cheese");
+      addIngredient("🥬 Lettuce");
+      addIngredient("🍅 Tomato");
+      addIngredient("🧅 Onion");
+      addIngredient("🍯 Mayo");
+      addIngredient("🌶️ Spicy Sauce");
+    }
+
+    // Initial render
+    renderBurger();
+  </script>
 </body>
 </html>
