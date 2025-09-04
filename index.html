@@ -21,6 +21,15 @@
     #burgerList { margin-top: 10px; padding: 0; }
     #burgerList li { list-style: none; padding: 5px 0; font-size: 18px; }
     .check { color: green; font-weight: bold; }
+    #finalBurgerImg {
+      margin-top: 15px;
+      display: none;
+    }
+    #finalBurgerImg img {
+      max-width: 250px;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
   </style>
 </head>
 <body>
@@ -48,6 +57,12 @@
   <ul id="burgerList"><li>No ingredients yet!</li></ul>
   <p id="finishMsg"></p>
 
+  <!-- Final burger image -->
+  <div id="finalBurgerImg">
+    <h3>🍽️ Here’s your burger:</h3>
+    <img id="burgerPhoto" src="" alt="Final Burger" />
+  </div>
+
   <h2>🍴 Quick Orders (Director)</h2>
   <div class="controls">
     <button class="btn" onclick="makeVegBurger()">🥗 Veg Burger</button>
@@ -58,6 +73,15 @@
 
   <script>
     let burger = [];
+
+    // Example burger photos (you can replace with your own images)
+    const burgerPhotos = {
+      veg: "https://upload.wikimedia.org/wikipedia/commons/7/75/Veggie_Burger.jpg",
+      nonveg: "https://upload.wikimedia.org/wikipedia/commons/3/39/Chicken_Burger.jpg",
+      paneer: "https://upload.wikimedia.org/wikipedia/commons/5/58/Veggie_burger_with_paneer.jpg",
+      deluxe: "https://upload.wikimedia.org/wikipedia/commons/8/89/Deluxe_Burger.jpg",
+      default: "https://upload.wikimedia.org/wikipedia/commons/0/0b/RedDot_Burger.jpg"
+    };
 
     function renderBurger() {
       const list = document.getElementById("burgerList");
@@ -77,6 +101,7 @@
       burger.push(item);
       renderBurger();
       document.getElementById("finishMsg").textContent = "";
+      document.getElementById("finalBurgerImg").style.display = "none";
     }
 
     function finishBurger() {
@@ -84,17 +109,31 @@
         alert("⚠️ Add some ingredients first!");
         return;
       }
+
       document.getElementById("finishMsg").innerHTML = "✅ Your Burger is ready for booking!";
       console.log("Booked Burger:", burger);
 
       // 🔔 Popup alert
       alert("🎉 Your Burger is ready and booked!");
+
+      // Decide which burger image to show
+      let photo = burgerPhotos.default;
+      if (burger.includes("🌱 Veg Patty")) photo = burgerPhotos.veg;
+      if (burger.includes("🥩 Chicken Patty")) photo = burgerPhotos.nonveg;
+      if (burger.includes("🧈 Paneer")) photo = burgerPhotos.paneer;
+      if (burger.includes("🌱 Veg Patty") && burger.includes("🥩 Chicken Patty") && burger.includes("🧈 Paneer")) {
+        photo = burgerPhotos.deluxe;
+      }
+
+      document.getElementById("burgerPhoto").src = photo;
+      document.getElementById("finalBurgerImg").style.display = "block";
     }
 
     function resetBurger() {
       burger = [];
       renderBurger();
       document.getElementById("finishMsg").textContent = "";
+      document.getElementById("finalBurgerImg").style.display = "none";
     }
 
     // Director functions (predefined recipes)
